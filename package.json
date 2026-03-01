@@ -1,0 +1,22 @@
+{
+  "name": "datadash-qa-automation",
+  "version": "1.0.0",
+  "description": "Automated QA for DataDash web-based reports using Playwright",
+  "main": "scraper.js",
+  "scripts": {
+    "test": "node scraper.js",
+    "scrape": "node scraper.js"
+  },
+  "keywords": [
+    "playwright",
+    "scraping",
+    "qa",
+    "automation",
+    "testing"
+  ],
+  "author": "DataDash",
+  "license": "MIT",
+  "dependencies": {
+    "playwright": "^1.40.0"
+  }
+}

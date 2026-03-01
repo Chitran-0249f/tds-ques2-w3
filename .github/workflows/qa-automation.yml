@@ -1,0 +1,40 @@
+name: DataDash QA Automation
+
+on:
+  workflow_dispatch: # Manual trigger for testing
+  schedule:
+    - cron: '0 2 * * *' # Runs daily at 2:00 AM UTC
+
+jobs:
+  qa-automation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: QA automation for 23f2004962@ds.study.iitm.ac.in
+        run: echo "Running QA automation for DataDash"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright scraper
+        run: node scraper.js
+
+      - name: Upload logs as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-logs
+          path: |
+            *.log
+          retention-days: 7

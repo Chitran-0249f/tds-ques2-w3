@@ -1,0 +1,35 @@
+name: Daily Commit Workflow
+
+on:
+  schedule:
+    # Runs daily at 9:30 AM UTC (not using wildcards)
+    - cron: '30 9 * * *'
+  workflow_dispatch: # Allows manual trigger for testing
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure git for 23f2004962@ds.study.iitm.ac.in
+        run: |
+          git config user.name "DevSync Bot"
+          git config user.email "23f2004962@ds.study.iitm.ac.in"
+
+      - name: Create daily activity log entry
+        run: |
+          echo "Daily update: $(date '+%Y-%m-%d %H:%M:%S UTC')" >> activity.log
+          echo "Workflow run #${{ github.run_number }}" >> activity.log
+          echo "---" >> activity.log
+
+      - name: Commit and push changes
+        run: |
+          git add activity.log
+          git commit -m "Daily automated commit - $(date '+%Y-%m-%d')"
+          git push
